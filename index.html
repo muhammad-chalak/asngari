@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="ku">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>چالاک — ئاسنگەری</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --muted:#9aa7b2;
+      --accent:#ffb703;
+      --glass: rgba(255,255,255,0.05);
+      --glass-2: rgba(255,255,255,0.03);
+      --card-bg: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      font-family: "Segoe UI", Tahoma, system-ui, "Noto Sans", "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(128,128,140,0.06), transparent),
+                  radial-gradient(900px 400px at 90% 90%, rgba(100,120,150,0.04), transparent),
+                  var(--bg);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:18px 28px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(6px);
+    }
+    .brand{
+      display:flex; gap:12px; align-items:center;
+    }
+    .logo{
+      width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#1f2937,#111827);
+      display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);
+      box-shadow:0 6px 18px rgba(0,0,0,0.6), inset 0 -6px 18px rgba(255,255,255,0.02);
+      font-size:18px;
+    }
+    .title{font-size:18px;font-weight:700}
+    .subtitle{font-size:12px;color:var(--muted);margin-top:2px}
+
+    main{padding:28px;flex:1;max-width:1200px;margin:0 auto;width:100%}
+    /* change: single-column grid so each row has one (large) card */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:20px;
+    }
+
+    /* card style */
+    .card{
+      background:var(--card-bg);
+      border-radius:12px;
+      padding:20px;
+      box-shadow: 0 8px 24px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;flex-direction:row;align-items:center;gap:18px;cursor:pointer;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    /* make card larger and horizontally oriented */
+    .card:hover{ transform: translateY(-8px) scale(1.01); box-shadow:0 16px 40px rgba(0,0,0,0.7);}
+    .card .thumb{
+      width:220px; height:140px; flex:0 0 220px; position:relative; border-radius:10px; overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:flex;align-items:center;justify-content:center;
+    }
+    .card .thumb svg{ width:80%; height:80%; opacity:.92; filter: drop-shadow(0 6px 18px rgba(0,0,0,0.6)); }
+    .card .meta{ flex:1; display:flex;flex-direction:column;gap:8px; }
+    .card h3{ margin:0;font-size:20px }
+    .card p{ margin:0;color:var(--muted); font-size:14px; }
+
+    /* section view */
+    .section-header{
+      display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:12px;
+    }
+    .section-title{ font-size:20px;font-weight:700 }
+    .section-actions{ display:flex; gap:10px; align-items:center }
+    .btn{
+      background:var(--accent); color:#07212b; padding:8px 12px;border-radius:8px;border:none;font-weight:700;
+      cursor:pointer; box-shadow: 0 6px 18px rgba(255,183,3,0.12);
+    }
+    .btn.ghost{ background:transparent;color:var(--accent); border:1px solid rgba(255,183,3,0.12) }
+
+    /* change: items single-column (big item cards) */
+    .items-grid{
+      display:grid;grid-template-columns: 1fr;gap:16px;
+    }
+    .item-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+      display:flex;flex-direction:row;align-items:center;gap:12px;
+      transition: transform .18s ease;
+    }
+    .item-card img{ width:220px; height:140px; object-fit:cover; border-radius:8px; display:block; flex:0 0 220px; }
+    .item-card h4{ margin:0;font-size:16px }
+    .item-actions{ display:flex; gap:8px; width:280px; justify-content:flex-end; margin-left:auto }
+    .small-btn{
+      padding:10px 12px;border-radius:8px;border:none;background:var(--glass);color:var(--muted);cursor:pointer;
+    }
+    .small-btn.primary{ background: linear-gradient(90deg, rgba(255,183,3,0.12), rgba(255,183,3,0.06)); color:var(--accent); font-weight:700; }
+
+    footer{
+      padding:18px 28px;background:linear-gradient(0deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border-top:1px solid rgba(255,255,255,0.02);
+      display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+    }
+    .socials{ display:flex; gap:12px; align-items:center }
+    .social{ display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:var(--glass-2);color:var(--muted);text-decoration:none }
+    .phone{ color:var(--accent); font-weight:700 }
+
+    /* modal (zoom) */
+    .modal{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.6);z-index:200;
+    }
+    .modal.show{ display:flex; }
+    .modal-card{ width:90%;max-width:900px;border-radius:12px;background:linear-gradient(180deg,#0b1220,#071019);padding:16px;position:relative;box-shadow:0 20px 80px rgba(0,0,0,0.7) }
+    .modal-card img{ width:100%; height:auto; display:block; border-radius:8px; }
+    .modal-close{
+      position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.06); border-radius:8px;padding:8px;border:none;color:var(--muted);cursor:pointer;
+    }
+    .modal-caption{ margin-top:10px;color:var(--muted) }
+
+    @media (max-width:900px){
+      .card{flex-direction:column;align-items:flex-start}
+      .card .thumb{ width:100%; height:140px; flex:unset }
+      .item-card{flex-direction:column;align-items:flex-start}
+      .item-card img{ width:100%; height:180px; flex:unset }
+      .item-actions{ width:100%; justify-content:flex-start }
+    }
+
+    @media (max-width:560px){
+      header{ padding:12px }
+      main{ padding:16px }
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">چ</div>
+      <div>
+        <div class="title">چالاک</div>
+        <div class="subtitle">خزمەتگوزارییەکانی ئاسنگەری — خێرا و باوەڕپێکراو</div>
+      </div>
+    </div>
+    <!-- note: phone removed from header as requested -->
+    <div></div>
+  </header>
+
+  <main id="app">
+    <!-- HOME VIEW -->
+    <section id="homeView">
+      <h2 style="margin:0 0 12px 0;font-size:22px">بەشەکان</h2>
+      <div class="grid" id="sectionsGrid"></div>
+    </section>
+
+    <!-- SECTION VIEW -->
+    <section id="sectionView" style="display:none;">
+      <div class="section-header">
+        <div>
+          <div class="section-title" id="sectionTitle">دەرگا</div>
+          <div class="subtitle" id="sectionSubtitle">پێشنیارەکان</div>
+        </div>
+        <div class="section-actions">
+          <!-- change: only one yellow back button -->
+          <button id="backBtn" class="btn">گەرانەوە</button>
+        </div>
+      </div>
+
+      <div class="items-grid" id="itemsGrid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <div style="font-weight:700">چالاک</div>
+      <div style="color:var(--muted);font-size:13px">پەیوەندی: <span class="phone">+964 0770 198 0027</span></div>
+    </div>
+    <div class="socials">
+      <a class="social" href="#" id="fbLink" title="Facebook"> فەیسبووک</a>
+      <a class="social" href="#" id="waLink" title="WhatsApp"> وەتس‌ئاپ</a>
+      <a class="social" href="#" id="vbLink" title="Viber"> ڤایبەر</a>
+    </div>
+  </footer>
+
+  <!-- modal for zoom -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <button id="modalClose" class="modal-close" title="بچووک کردن">❌</button>
+      <img id="modalImg" src="" alt="گۆراندن" />
+      <div class="modal-caption" id="modalCaption"></div>
+    </div>
+  </div>
+
+  <script>
+    // ====== Data model ======
+    const sections = [
+      { id:'derga', title:'دەرگا', subtitle:'دەرگا - زورەکان و کارەبەرەکان', icon: svgDoor() },
+      { id:'kapar', title:'کەپر', subtitle:'کەپر - پەیوەندیدانی پاشکۆی', icon: svgLock() },
+      { id:'kətîbə', title:'کەتیبە', subtitle:'کلیل و کەتیبە', icon: svgKey() },
+      { id:'mehajera', title:'مەحاجەرە', subtitle:'پاشەکەوت و گۆڕانکاری', icon: svgTool() },
+      { id:'refa', title:'رەفە', subtitle:'رەفە - ماددە و ڕێنمایی', icon: svgShelf() },
+      { id:'qaderma', title:'قادرمە', subtitle:'قادرمە - خزمەتگوزاری تایبەتی', icon: svgStar() },
+    ];
+
+    function createItemsForSection(sectionId){
+      const arr = [];
+      for(let i=1;i<=5;i++){
+        arr.push({
+          id: sectionId + '-i' + i,
+          name: `${prettyTitle(sectionId)} — شت ${i}`,
+          img: placeholderDataURL(prettyTitle(sectionId), i)
+        });
+      }
+      return arr;
+    }
+
+    function prettyTitle(id){
+      const s = sections.find(x=>x.id===id);
+      return s ? s.title : id;
+    }
+
+    function placeholderDataURL(title, idx){
+      const w = 900, h = 600;
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}' viewBox='0 0 ${w} ${h}'>
+        <defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='#1f2937'/><stop offset='1' stop-color='#0b1220'/></linearGradient></defs>
+        <rect width='100%' height='100%' fill='url(#g)' />
+        <text x='50%' y='45%' font-size='36' fill='#ffb703' text-anchor='middle' font-family='Segoe UI, Noto Sans'>${escapeXml(title)}</text>
+        <text x='50%' y='60%' font-size='20' fill='#9aa7b2' text-anchor='middle' font-family='Segoe UI, Noto Sans'>ئایتم ${idx}</text>
+      </svg>`;
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+    function escapeXml(s){ return s.replace(/[&<>'"]/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;' }[c])); }
+
+    function svgDoor(){ return `<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="6" width="44" height="52" rx="4" fill="#10202b"/><rect x="16" y="12" width="20" height="40" rx="2" fill="#0b1220"/><circle cx="38" cy="36" r="2" fill="#ffb703"/></svg>` }
+    function svgLock(){ return `<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="12" y="26" width="40" height="28" rx="4" fill="#0b1220"/><path d="M20 26V20a12 12 0 0124 0v6" stroke="#ffb703" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>` }
+    function svgKey(){ return `<svg viewBox="0 0 64 64"><circle cx="20" cy="32" r="8" fill="#0b1220"/><rect x="28" y="28" width="20" height="8" rx="2" fill="#10202b"/><rect x="46" y="30" width="4" height="4" fill="#ffb703"/></svg>` }
+    function svgTool(){ return `<svg viewBox="0 0 64 64"><path d="M12 44L26 30M26 30l6-6 16 16-6 6z" stroke="#ffb703" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="46" r="3" fill="#10202b"/></svg>` }
+    function svgShelf(){ return `<svg viewBox="0 0 64 64"><rect x="8" y="12" width="48" height="8" rx="2" fill="#10202b"/><rect x="8" y="30" width="48" height="8" rx="2" fill="#0b1220"/><rect x="8" y="48" width="48" height="8" rx="2" fill="#071019"/></svg>` }
+    function svgStar(){ return `<svg viewBox="0 0 64 64"><path d="M32 8l6.5 14L54 26l-12 10 3 16L32 40 19 42l3-16L10 26l15.5-4L32 8z" fill="#ffb703"/></svg>` }
+
+    // render home cards (single-column, larger)
+    const sectionsGrid = document.getElementById('sectionsGrid');
+    sections.forEach(s=>{
+      const el = document.createElement('article');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="thumb">${s.icon}</div>
+        <div class="meta">
+          <h3>${s.title}</h3>
+          <p>${s.subtitle}</p>
+        </div>
+      `;
+      el.addEventListener('click', ()=> openSection(s.id));
+      sectionsGrid.appendChild(el);
+    });
+
+    // section view logic
+    const homeView = document.getElementById('homeView');
+    const sectionView = document.getElementById('sectionView');
+    const sectionTitle = document.getElementById('sectionTitle');
+    const sectionSubtitle = document.getElementById('sectionSubtitle');
+    const itemsGrid = document.getElementById('itemsGrid');
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modalImg');
+    const modalCaption = document.getElementById('modalCaption');
+
+    function openSection(id){
+      const s = sections.find(x=>x.id===id);
+      sectionTitle.textContent = s.title;
+      sectionSubtitle.textContent = s.subtitle;
+      itemsGrid.innerHTML = '';
+      const items = createItemsForSection(id);
+      items.forEach(it=>{
+        const c = document.createElement('div');
+        c.className = 'item-card';
+        c.innerHTML = `
+          <img src="${it.img}" alt="${it.name}" />
+          <div style="flex:1;">
+            <h4>${it.name}</h4>
+            <p style="color:var(--muted);margin-top:6px">پاشەکەوت: نموونەی وێنەی کار</p>
+          </div>
+          <div class="item-actions">
+            <!-- change: only one button (گەورەکردن) -->
+            <button class="small-btn primary" data-img="${it.img}" data-name="${it.name}">گەورەکردن</button>
+          </div>
+        `;
+        // zoom button
+        c.querySelector('.small-btn.primary').addEventListener('click', (e)=>{
+          const src = e.currentTarget.getAttribute('data-img');
+          const name = e.currentTarget.getAttribute('data-name');
+          openModal(src, name);
+        });
+
+        itemsGrid.appendChild(c);
+      });
+
+      homeView.style.display = 'none';
+      sectionView.style.display = 'block';
+      window.scrollTo({behavior:'smooth', top:0});
+    }
+
+    // single back button
+    document.getElementById('backBtn').addEventListener('click', goHome);
+    function goHome(){
+      sectionView.style.display = 'none';
+      homeView.style.display = 'block';
+      window.scrollTo({behavior:'smooth', top:0});
+    }
+
+    // modal functions
+    function openModal(src, caption){
+      modalImg.src = src;
+      modalCaption.textContent = caption;
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
+    }
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+    function closeModal(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); }
+
+    // footer links (placeholder)
+    document.getElementById('fbLink').addEventListener('click', (e)=>{ e.preventDefault(); alert('لینکی فەیسبووک ئەم جێرە دابنێ'); });
+    document.getElementById('waLink').addEventListener('click', (e)=>{ e.preventDefault(); alert('بازنە بۆ وەتس‌ئاپ: +964 7xx-xxx-xxx'); });
+    document.getElementById('vbLink').addEventListener('click', (e)=>{ e.preventDefault(); alert('بازنە بۆ ڤایبەر: +964 7xx-xxx-xxx'); });
+
+    // accessibility: Esc to close modal or go home
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') {
+        if(modal.classList.contains('show')) closeModal();
+        else goHome();
+      }
+    });
+  </script>
+</body>
+</html>
