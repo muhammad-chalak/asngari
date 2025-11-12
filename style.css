@@ -1,0 +1,22 @@
+/* style.css */
+:root{
+  --bg:#0f1724;--muted:#9aa7b2;--accent:#ffb703;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#e6eef6;font-family:Segoe UI, Noto Sans, system-ui;min-height:100vh;display:flex;flex-direction:column;}
+header{padding:18px 20px;background:rgba(255,255,255,0.03);display:flex;align-items:center;}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:48px;height:48px;border-radius:8px;background:#111827;color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700}
+main{padding:20px;max-width:1100px;margin:0 auto;flex:1;width:100%}
+.grid{display:grid;grid-template-columns:1fr;gap:16px}
+.card{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.03);padding:16px;border-radius:10px;cursor:pointer}
+.thumb{width:120px;height:80px;border-radius:8px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.items-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.item-card{display:flex;gap:12px;align-items:center;background:rgba(255,255,255,0.02);padding:10px;border-radius:8px}
+.item-card img{width:220px;height:140px;object-fit:cover;border-radius:8px}
+.btn{background:var(--accent);color:#07212b;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6)}
+.modal.show{display:flex}
+.modal-card{background:#0b1220;padding:12px;border-radius:8px;max-width:900px;width:90%}
+.modal-card img{width:100%;border-radius:6px}
