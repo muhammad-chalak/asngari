@@ -1,6 +1,6 @@
 /* script.js */
 const sections = [
-  { id:'derga', title:'دەرگا', subtitle:'دەرگاکان', prefix:'IMG', count:124 },
+  { id:'derga', title:'دەرگا', subtitle:'دەرگاکان', prefix:'IMG', count:120 },
   { id:'kapar', title:'کەپر', subtitle:'کەپرەکان', prefix:'KAPR', count:31 },
   { id:'kətîbə', title:'کەتیبە', subtitle:'کەتیبەکان', prefix:'KATIBA', count:11 },
   { id:'mehajera', title:'مەحاجەرە', subtitle:'مەحاجەرەکان', prefix:'MHAJARA', count:14 },
