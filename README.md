@@ -1,2 +1,0 @@
-# asngari
-Asngari project 
