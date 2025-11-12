@@ -2,66 +2,9 @@
 <html lang="ku">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>چالاک — ئاسنگەری</title>
-  <style>
-    :root{
-      --bg:#0f1724;
-      --muted:#9aa7b2;
-      --accent:#ffb703;
-      --glass: rgba(255,255,255,0.05);
-      --card-bg: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      font-family: "Segoe UI", Tahoma, system-ui, "Noto Sans", "Helvetica Neue", Arial;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(128,128,140,0.06), transparent),
-                  radial-gradient(900px 400px at 90% 90%, rgba(100,120,150,0.04), transparent),
-                  var(--bg);
-      color:#e6eef6;
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-    }
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:18px 28px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-bottom:1px solid rgba(255,255,255,0.03);
-      position:sticky;top:0;z-index:50;backdrop-filter:blur(6px);
-    }
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#1f2937,#111827);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);font-size:18px;}
-    .title{font-size:18px;font-weight:700}
-    .subtitle{font-size:12px;color:var(--muted)}
-    main{padding:28px;flex:1;max-width:1200px;margin:0 auto;width:100%}
-    .grid{display:grid;grid-template-columns:1fr;gap:20px;}
-    .card{background:var(--card-bg);border-radius:12px;padding:20px;box-shadow:0 8px 24px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:row;align-items:center;gap:18px;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;}
-    .card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,0.7);}
-    .card .thumb{width:220px;height:140px;flex:0 0 220px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.03);border-radius:10px;}
-    .card .meta{flex:1;}
-    .card h3{margin:0;font-size:20px;}
-    .card p{margin:0;color:var(--muted);font-size:14px;}
-    .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
-    .btn{background:var(--accent);color:#07212b;padding:8px 12px;border-radius:8px;border:none;font-weight:700;cursor:pointer;}
-    .items-grid{display:grid;grid-template-columns:1fr;gap:16px;}
-    .item-card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:row;align-items:center;gap:12px;}
-    .item-card img{width:220px;height:140px;object-fit:cover;border-radius:8px;flex:0 0 220px;}
-    .item-actions{margin-left:auto;}
-    .small-btn{padding:10px 12px;border-radius:8px;border:none;background:var(--glass);color:var(--muted);cursor:pointer;}
-    .small-btn.primary{background:rgba(255,183,3,0.15);color:var(--accent);font-weight:700;}
-    footer{padding:18px 28px;background:linear-gradient(0deg,rgba(255,255,255,0.01),rgba(255,255,255,0.02));border-top:1px solid rgba(255,255,255,0.02);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;}
-    .socials{display:flex;gap:12px;}
-    .social{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.03);color:var(--muted);text-decoration:none;}
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.6);z-index:200;}
-    .modal.show{display:flex;}
-    .modal-card{width:90%;max-width:900px;border-radius:12px;background:#0b1220;padding:16px;position:relative;}
-    .modal-card img{width:100%;border-radius:8px;}
-    .modal-close{position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.06);border-radius:8px;padding:8px;border:none;color:var(--muted);cursor:pointer;}
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
@@ -76,14 +19,14 @@
 
   <main id="app">
     <section id="homeView">
-      <h2 style="margin:0 0 12px 0;">بەشەکان</h2>
+      <h2>بەشەکان</h2>
       <div class="grid" id="sectionsGrid"></div>
     </section>
 
     <section id="sectionView" style="display:none;">
       <div class="section-header">
         <div>
-          <div id="sectionTitle" style="font-size:20px;font-weight:700;"></div>
+          <div id="sectionTitle"></div>
           <div id="sectionSubtitle" class="subtitle"></div>
         </div>
         <button id="backBtn" class="btn">گەرانەوە</button>
@@ -95,12 +38,12 @@
   <footer>
     <div>
       <div>چالاک — ئاسنگەری</div>
-      <div style="color:var(--muted);font-size:13px;">پەیوەندی: <span style="color:var(--accent);">+964 0770 198 0027</span></div>
+      <div class="contact">پەیوەندی: <span>+964 7xx-xxx-xxx</span></div>
     </div>
     <div class="socials">
-      <a href="#" class="social"> فەیسبووک</a>
-      <a href="#" class="social"> وەتس‌ئاپ</a>
-      <a href="#" class="social"> ڤایبەر</a>
+      <a href="#" class="social">📘 فەیسبووک</a>
+      <a href="#" class="social">🟢 وەتس‌ئاپ</a>
+      <a href="#" class="social">💜 ڤایبەر</a>
     </div>
   </footer>
 
@@ -108,84 +51,10 @@
     <div class="modal-card">
       <button id="modalClose" class="modal-close">❌</button>
       <img id="modalImg" src="" alt="">
-      <div id="modalCaption" style="margin-top:10px;color:var(--muted);"></div>
+      <div id="modalCaption"></div>
     </div>
   </div>
 
-  <script>
-    const sections = [
-      { id:'derga', title:'دەرگا', subtitle:'دەرگاکان - ئاسنگەری', prefix:'IMG', count:124 },
-      { id:'kapar', title:'کەپر', subtitle:'کەپرەکان', prefix:'KAPR', count:31 },
-      { id:'kətîbə', title:'کەتیبە', subtitle:'کەتیبەکان', prefix:'KATIBA', count:11 },
-      { id:'mehajera', title:'مەحاجەرە', subtitle:'مەحاجەرەکان', prefix:'MHAJARA', count:14 },
-      { id:'refa', title:'رەفە', subtitle:'رەفەکان', prefix:'RAFA', count:4 },
-      { id:'qaderma', title:'قادرمە', subtitle:'قادرمەکان', prefix:'QADRMA', count:30 }
-    ];
-
-    const extensions = ["jpg","JPG","jpeg","JPEG","png","PNG","heic","HEIC"];
-
-    const sectionsGrid = document.getElementById('sectionsGrid');
-    const homeView = document.getElementById('homeView');
-    const sectionView = document.getElementById('sectionView');
-    const sectionTitle = document.getElementById('sectionTitle');
-    const sectionSubtitle = document.getElementById('sectionSubtitle');
-    const itemsGrid = document.getElementById('itemsGrid');
-    const modal = document.getElementById('modal');
-    const modalImg = document.getElementById('modalImg');
-    const modalCaption = document.getElementById('modalCaption');
-
-    // render home
-    sections.forEach(s=>{
-      const card=document.createElement('div');
-      card.className='card';
-      card.innerHTML=`
-        <div class="thumb"><span style="font-size:28px;color:var(--accent);">🧱</span></div>
-        <div class="meta"><h3>${s.title}</h3><p>${s.subtitle}</p></div>`;
-      card.addEventListener('click',()=>openSection(s));
-      sectionsGrid.appendChild(card);
-    });
-
-    function openSection(sec){
-      sectionTitle.textContent=sec.title;
-      sectionSubtitle.textContent=sec.subtitle;
-      itemsGrid.innerHTML='';
-      for(let i=1;i<=sec.count;i++){
-        const fileName = getImageFile(sec.prefix,i);
-        const el=document.createElement('div');
-        el.className='item-card';
-        el.innerHTML=`
-          <img src="${fileName}" alt="${sec.prefix}${i}">
-          <div style="flex:1;"><h4>${sec.prefix}${i}</h4></div>
-          <div class="item-actions"><button class="small-btn primary" data-img="${fileName}" data-name="${sec.prefix}${i}">گەورەکردن</button></div>`;
-        el.querySelector('.primary').addEventListener('click',e=>{
-          openModal(e.target.dataset.img,e.target.dataset.name);
-        });
-        itemsGrid.appendChild(el);
-      }
-      homeView.style.display='none';
-      sectionView.style.display='block';
-      window.scrollTo(0,0);
-    }
-
-    function getImageFile(prefix, index){
-      // Pick first extension (browser will ignore if not found)
-      const ext = extensions[0];
-      return `images/${prefix}${index}.${ext}`;
-    }
-
-    document.getElementById('backBtn').addEventListener('click',()=>{
-      sectionView.style.display='none';
-      homeView.style.display='block';
-      window.scrollTo(0,0);
-    });
-
-    function openModal(src,caption){
-      modalImg.src=src;
-      modalCaption.textContent=caption;
-      modal.classList.add('show');
-    }
-    document.getElementById('modalClose').addEventListener('click',()=>modal.classList.remove('show'));
-    modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show');});
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
