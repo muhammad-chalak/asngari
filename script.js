@@ -1,78 +1,95 @@
-const sections = [
-  { id:'derga', title:'دەرگا', subtitle:'دەرگاکان', prefix:'IMG', count:124 },
-  { id:'kapar', title:'کەپر', subtitle:'کەپرەکان', prefix:'KAPR', count:31 },
-  { id:'kətîbə', title:'کەتیبە', subtitle:'کەتیبەکان', prefix:'KATIBA', count:11 },
-  { id:'mehajera', title:'مەحاجەرە', subtitle:'مەحاجەرەکان', prefix:'MHAJARA', count:14 },
-  { id:'refa', title:'رەفە', subtitle:'رەفەکان', prefix:'RAFA', count:4 },
-  { id:'qaderma', title:'قادرمە', subtitle:'قادرمەکان', prefix:'QADRMA', count:30 }
-];
+/* --- جێگای کۆدی پێشوو: بەجێی getImageFile() و بخشەکەی openSection() ئەمە بکاربهێنە --- */
 
-const sectionsGrid = document.getElementById('sectionsGrid');
-const homeView = document.getElementById('homeView');
-const sectionView = document.getElementById('sectionView');
-const sectionTitle = document.getElementById('sectionTitle');
-const sectionSubtitle = document.getElementById('sectionSubtitle');
-const itemsGrid = document.getElementById('itemsGrid');
-const modal = document.getElementById('modal');
-const modalImg = document.getElementById('modalImg');
-const modalCaption = document.getElementById('modalCaption');
+const extensions = ["jpg","JPG","jpeg","JPEG","png","PNG","heic","HEIC"];
+const placeholderURL = (prefix, i) => `https://via.placeholder.com/600x400?text=${prefix}${i}`;
 
-sections.forEach(s=>{
-  const card=document.createElement('div');
-  card.className='card';
-  card.innerHTML=`
-    <div class="thumb"><span style="font-size:28px;color:var(--accent);">🧱</span></div>
-    <div><h3>${s.title}</h3><p>${s.subtitle}</p></div>`;
-  card.addEventListener('click',()=>openSection(s));
-  sectionsGrid.appendChild(card);
-});
+/**
+ * دروستکردنی <img> بە فۆڵبەکی فۆرماتی وێنە:
+ * هەوڵ دەدات هەموو extensions لە لیستەکەی بالا تاقی بکات (با onerror)
+ * ئەگەر هیچ یەک نەبێت، placeholder نیشان دەدرێت.
+ *
+ * returns HTMLImageElement (برای قرار دادن در DOM)
+ */
+function createImgWithFallback(prefix, index) {
+  // create element
+  const img = document.createElement('img');
+  img.alt = `${prefix}${index}`;
+  img.width = 600; // یا نیشاندانی CSS پێشتر
+  img.height = 400;
 
-function openSection(sec){
-  sectionTitle.textContent=sec.title;
-  sectionSubtitle.textContent=sec.subtitle;
-  itemsGrid.innerHTML='';
-  for(let i=1;i<=sec.count;i++){
-    const fileName=getImageFile(sec.prefix,i);
-    const el=document.createElement('div');
-    el.className='item-card';
-    el.innerHTML=`
-      <img src="${fileName}" alt="${sec.prefix}${i}">
-      <div><h4>${sec.prefix}${i}</h4></div>
-      <div class="item-actions"><button class="small-btn primary" data-img="${fileName}" data-name="${sec.prefix}${i}">گەورەکردن</button></div>`;
-    el.querySelector('.primary').addEventListener('click',e=>{
-      openModal(e.target.dataset.img,e.target.dataset.name);
+  // keep track of which ext to try
+  let tryIdx = 0;
+
+  function tryNext() {
+    if (tryIdx >= extensions.length) {
+      // هیچ کۆدی پشتیوانی نییە -> placeholder
+      img.src = placeholderURL(prefix, index);
+      return;
+    }
+    const ext = extensions[tryIdx++];
+    // note: case-sensitive on server; we try many casings above
+    img.src = `images/${prefix}${index}.${ext}`;
+    // if it fails, onerror will call tryNext again
+  }
+
+  // if image fails to load, try next extension
+  img.onerror = function () {
+    // avoid infinite loop in case placeholder also 404
+    // if current src is our placeholder, stop
+    if (img.src && img.src.indexOf('via.placeholder.com') !== -1) {
+      img.onerror = null;
+      return;
+    }
+    tryNext();
+  };
+
+  // start first try
+  tryNext();
+  return img;
+}
+
+/* Update openSection to use createImgWithFallback instead of getImageFile() */
+function openSection(sec) {
+  sectionTitle.textContent = sec.title;
+  sectionSubtitle.textContent = sec.subtitle;
+  itemsGrid.innerHTML = '';
+
+  for (let i = 1; i <= sec.count; i++) {
+    const el = document.createElement('div');
+    el.className = 'item-card';
+
+    // create image element with fallback loader
+    const imgEl = createImgWithFallback(sec.prefix, i);
+    imgEl.className = ''; // if you want a class, set it (e.g., 'item-img') 
+    // wrap left part
+    const imgWrapper = document.createElement('div');
+    imgWrapper.style.flex = '0 0 220px';
+    imgWrapper.appendChild(imgEl);
+
+    const meta = document.createElement('div');
+    meta.style.flex = '1';
+    meta.innerHTML = `<h4>${sec.prefix}${i}</h4>`;
+
+    const actions = document.createElement('div');
+    actions.className = 'item-actions';
+    const btn = document.createElement('button');
+    btn.className = 'small-btn primary';
+    btn.textContent = 'گەورەکردن';
+    // when clicked, open modal with current img.src
+    btn.addEventListener('click', ()=>{
+      openModal(imgEl.src, `${sec.prefix}${i}`);
     });
+    actions.appendChild(btn);
+
+    // assemble
+    el.appendChild(imgWrapper);
+    el.appendChild(meta);
+    el.appendChild(actions);
+
     itemsGrid.appendChild(el);
   }
-  homeView.style.display='none';
-  sectionView.style.display='block';
+
+  homeView.style.display = 'none';
+  sectionView.style.display = 'block';
   window.scrollTo(0,0);
 }
-
-function getImageFile(prefix,index){
-  const exts=["jpg","JPG","jpeg","JPEG","png","PNG","heic","HEIC"];
-  for(const ext of exts){
-    const file=`images/${prefix}${index}.${ext}`;
-    if(imageExists(file)) return file;
-  }
-  return `https://via.placeholder.com/300x200?text=${prefix}${index}`;
-}
-
-function imageExists(url){
-  const xhr=new XMLHttpRequest();
-  xhr.open('HEAD',url,false);
-  try{xhr.send();return xhr.status!=404;}catch{return false;}
-}
-
-document.getElementById('backBtn').addEventListener('click',()=>{
-  sectionView.style.display='none';
-  homeView.style.display='block';
-});
-
-function openModal(src,caption){
-  modalImg.src=src;
-  modalCaption.textContent=caption;
-  modal.classList.add('show');
-}
-document.getElementById('modalClose').addEventListener('click',()=>modal.classList.remove('show'));
-modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show');});
