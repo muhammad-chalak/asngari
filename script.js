@@ -55,7 +55,7 @@ function loadBatch(sec){
   for(let i=start;i<=end;i++){
     const el=document.createElement('div');el.className='item-card';
     const img = createImgWithFallback(sec.prefix,i);
-    img.style.width='220px';img.style.height='140px';img.style.objectFit='cover';
+    img.style.width='440px';img.style.height='280px';img.style.objectFit='cover';
     const meta=document.createElement('div');meta.innerHTML=`<h4>${sec.prefix}${i}</h4>`;
     const actions=document.createElement('div');actions.className='item-actions';
     const btn=document.createElement('button');btn.className='btn';btn.textContent='گەورەکردن';
