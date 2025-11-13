@@ -12,7 +12,7 @@ main{padding:20px;max-width:1100px;margin:0 auto;flex:1;width:100%}
 .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .items-grid{display:grid;grid-template-columns:1fr;gap:12px}
 .item-card{display:flex;gap:12px;align-items:center;background:rgba(255,255,255,0.02);padding:10px;border-radius:8px}
-.item-card img{width:220px;height:140px;object-fit:cover;border-radius:8px}
+.item-card img{width:440px;height:280px;object-fit:cover;border-radius:8px}
 .btn{background:var(--accent);color:#07212b;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
 .loader{padding:14px;text-align:center;color:var(--muted)}
 .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6)}
