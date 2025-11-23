@@ -102,6 +102,7 @@ function openModal(src,caption){
 document.getElementById('modalClose').addEventListener('click',()=>modal.classList.remove('show'));
 modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show')});
 
+
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+  navigator.serviceWorker.register('serviceworker.js').catch(()=>{});
 }
